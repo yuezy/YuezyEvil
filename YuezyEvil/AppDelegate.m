@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "BaseNavigationViewController.h"
+#import "BaseViewController.h"
+#import "ViewController.h"
+#import "UITabBarItem+Universal.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +21,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    //init view
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.window makeKeyAndVisible];
+    [self initTabBarView];
+    self.window.rootViewController = self.tabBarViewController;
+    self.window.backgroundColor = [UIColor whiteColor];
+    
     return YES;
 }
 
@@ -40,6 +51,38 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - initTabBarView
+- (void)initTabBarView {
+    BaseNavigationViewController *homeController = [[BaseNavigationViewController alloc] initWithRootViewController:[[ViewController alloc] init]];
+    homeController.tabBarItem = [UITabBarItem itemWithTitle:@"火箭" image:[UIImage imageNamed:@"rocket.png"] selectedImage:[UIImage imageNamed:@"rocketSelected.png"]];
+    
+    BaseNavigationViewController *investListController = [[BaseNavigationViewController alloc] initWithRootViewController:[[ViewController alloc] init]];
+    investListController.tabBarItem = [UITabBarItem itemWithTitle:@"卫星" image:[UIImage imageNamed:@"satellite.png"] selectedImage:[UIImage imageNamed:@"satelliteSelceted.png"]];
+    
+    
+    BaseNavigationViewController *accountController = [[BaseNavigationViewController alloc] initWithRootViewController:[[ViewController alloc] init]];
+    accountController.tabBarItem = [UITabBarItem itemWithTitle:@"实验" image:[UIImage imageNamed:@"testlab.png"] selectedImage:[UIImage imageNamed:@"testlabSelected.png"]];
+    
+    BaseNavigationViewController *moreController = [[BaseNavigationViewController alloc] initWithRootViewController:[[ViewController alloc] init]];
+    moreController.tabBarItem = [UITabBarItem itemWithTitle:@"更多" image:[UIImage imageNamed:@"more.png"] selectedImage:[UIImage imageNamed:@"moreSelected.png"]];
+    
+    self.tabBarViewController = [[UITabBarController alloc] init];
+    self.tabBarViewController.delegate = self;
+    self.tabBarViewController.viewControllers = [NSArray arrayWithObjects:homeController, investListController, accountController, moreController,nil];
+    
+    // set titleColor
+    UIColor *titleHighlightedColor = [UIColor colorWithHexString:@"#EB4F38"];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                       [UIColor grayColor], NSForegroundColorAttributeName,
+                                                       kSTHeitiSC_11, NSFontAttributeName,
+                                                       nil] forState:UIControlStateNormal];
+    
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                       titleHighlightedColor, NSForegroundColorAttributeName,
+                                                       kSTHeitiSC_11, NSFontAttributeName,
+                                                       nil] forState:UIControlStateSelected];
 }
 
 @end

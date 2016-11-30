@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CommonHeader.h"
 
 @interface ViewController : UIViewController
 
